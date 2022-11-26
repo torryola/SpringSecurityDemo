@@ -13,10 +13,8 @@ Implementing basic auth in SpringBoot:
 - Every request requires Base64 encoded (UserName and Password)
 
 Example:
-
-'''java
-
-  @Configuration
+```java
+@Configuration
   @EnableWebSecurity
   public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
@@ -28,5 +26,4 @@ Example:
   .httpBasic();
   }
   }
-
-'''
+```
