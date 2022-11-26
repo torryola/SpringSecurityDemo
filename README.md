@@ -14,7 +14,7 @@ Implementing basic auth in SpringBoot:
 
 Example:
 ```java
-@Configuration
+  @Configuration
   @EnableWebSecurity
   public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
@@ -26,4 +26,22 @@ Example:
   .httpBasic();
   }
   }
+```
+#### WhiteList Link Example
+```java
+@Configuration
+@EnableWebSecurity
+public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
+    private String[] allowUrl = new String[]{"/", "index", "/api/v1/open/*"};
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers(allowUrl).permitAll() // Whitelist any url with open and Home i.e. / or index.html
+                .anyRequest()
+                .authenticated()
+                .and()
+                .httpBasic();
+    }
+}
 ```
