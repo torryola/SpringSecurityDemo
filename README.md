@@ -15,6 +15,7 @@ Implementing basic auth in SpringBoot:
 Example:
 
 '''java
+
   @Configuration
   @EnableWebSecurity
   public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -27,4 +28,5 @@ Example:
   .httpBasic();
   }
   }
+
 '''
