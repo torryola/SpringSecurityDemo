@@ -1,8 +1,10 @@
 server:
   port: 8282
 spring:
+  profiles:
+    active: dev
   datasource:
-    url: <DB_CONNECTION_STRING>#jdbc:h2:mem:testdb
+    url: <DB_CONNECTION_STRING> #jdbc:h2:mem:testdb
     username: <DB_USERNAME>
     password: <DB_PASSWORD>
     driver-class-name: com.mysql.cj.jdbc.Driver #org.h2.Driver
