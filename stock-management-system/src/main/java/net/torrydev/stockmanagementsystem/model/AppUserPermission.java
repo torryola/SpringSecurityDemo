@@ -5,7 +5,10 @@ public enum AppUserPermission {
     ADMIN_WRITE("admin:write"),
     ADMIN_DELET("admin:delete"),
     USER_READ("user:read"),
-    USER_WRITE("user:write");
+    USER_WRITE("user:write"),
+
+    DEVELOPER_READ("dev:read"),
+    DEVELOPER_WRITE("dev:write");
 
     private String permission;
 
