@@ -1,6 +1,5 @@
 package net.torrydev.stockmanagementsystem.security;
 
-import net.torrydev.stockmanagementsystem.model.AppUserRole;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,23 +8,27 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
-import static net.torrydev.stockmanagementsystem.model.AppUserRole.*;
+import static net.torrydev.stockmanagementsystem.model.AppUserRole.ADMIN;
+import static net.torrydev.stockmanagementsystem.model.AppUserRole.USER;
 
 @Configuration
 @EnableWebSecurity
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
-    private String[] allowUrl = new String[]{"/", "index", "/css/*", "/js/*"};
+    private static final String[] PUBLIC_ALLOW_URL_PATTERN = {"/", "index", "/css/*", "/js/*"};
+    private static final String[] SECURE_URL_PATTERN = {"/api/v1/secured/**"};
+    private static final String[] OPEN_URL_PATTERN = {"/api/v1/open/**"};
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers(allowUrl).permitAll() // Whitelist any url with open and Home i.e. / or index.html
-                .antMatchers("/api/v1/secured/**").hasRole(ADMIN.name()) // Admin Only Resource
-                .antMatchers("/api/v1/open/**").hasAnyRole(ADMIN.name(), USER.name()) // Admin and User resource
+                .antMatchers(PUBLIC_ALLOW_URL_PATTERN).permitAll() // Whitelist any url with open and Home i.e. / or index.html
+                .antMatchers(SECURE_URL_PATTERN).hasRole(ADMIN.name()) // Admin Only Resource
+                .antMatchers(OPEN_URL_PATTERN).hasAnyRole(ADMIN.name(), USER.name()) // Admin and User resource
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -35,7 +38,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
     // For Custom userName and Password - Using InMemoryUserDetails
 
     @Override @Bean
-    public UserDetailsService userDetailsServiceBean() throws Exception {
+    public UserDetailsService userDetailsServiceBean() throws UsernameNotFoundException {
         // Build Custom Userdetails
         UserDetails adminUser = User.builder()
                 .username("secureUser")
