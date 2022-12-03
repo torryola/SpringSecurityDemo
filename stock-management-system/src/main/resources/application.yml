@@ -1,6 +1,8 @@
 server:
   port: 8282
 spring:
+  profiles:
+    active: dev
   datasource:
     url: <DB_CONNECTION_STRING>#jdbc:h2:mem:testdb
     username: <DB_USERNAME>
