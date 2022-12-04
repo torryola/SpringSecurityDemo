@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.torrydev.stockmanagementsystem.dto.ProductDto;
 import net.torrydev.stockmanagementsystem.services.ProductDaoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ public class ProductController {
     private ProductDaoService productService;
 
     @GetMapping("/product/{code}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DEVELOPER','ROLE_USER')")
     public String getProductByProductCode(@PathVariable("code") String code, Model model){
         ProductDto dto = productService.findByProductCode(code).get();
         log.info("==== Product with code {} found {}", code, dto);
