@@ -35,10 +35,6 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable() // Prevent Spring-Security from Protecting the endpoint by default
                 .authorizeRequests()
                 .antMatchers(PUBLIC_ALLOW_URL_PATTERN).permitAll() // Whitelist any url with open and Home i.e. / or index.html
-                //.antMatchers(SECURE_URL_PATTERN).hasRole(ADMIN.name()) // Admin Only Resource
-               // .antMatchers(HttpMethod.GET, SECURE_DEV_URL_PATTERN).hasAnyRole(ADMIN.name(), DEVELOPER.name()) // Admin and Developer Only Resource
-               // .antMatchers(HttpMethod.POST, SECURE_DEV_URL_PATTERN).hasAuthority(ADMIN_WRITE.getPermission()) // Only Admin with write permission can access post
-               // .antMatchers(OPEN_URL_PATTERN).hasAnyRole(ADMIN.name(), USER.name(), DEVELOPER.name()) // Admin and User resource
                 .anyRequest()
                 .authenticated()
                 .and()
