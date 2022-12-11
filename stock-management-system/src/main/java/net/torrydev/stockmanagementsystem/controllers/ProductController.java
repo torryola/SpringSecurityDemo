@@ -18,6 +18,15 @@ public class ProductController {
     @Autowired
     private ProductDaoService productService;
 
+    @GetMapping(path = {"/","/catalog"})
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DEVELOPER','ROLE_USER')")
+    public String getCatalog(Model model){
+//        ProductDto dto = productService.findByProductCode(code).get();
+//        log.info("==== Product with code {} found {}", code, dto);
+//        model.addAttribute("product", dto);
+        return "catalog";
+    }
+
     @GetMapping("/product/{code}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DEVELOPER','ROLE_USER')")
     public String getProductByProductCode(@PathVariable("code") String code, Model model){
