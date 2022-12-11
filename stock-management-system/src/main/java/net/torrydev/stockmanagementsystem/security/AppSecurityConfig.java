@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
 
 import static net.torrydev.stockmanagementsystem.model.AppUserPermission.ADMIN_WRITE;
 import static net.torrydev.stockmanagementsystem.model.AppUserPermission.DEVELOPER_WRITE;
@@ -32,8 +34,8 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable() // Prevent Spring-Security from Protecting the endpoint by default
-                .authorizeRequests()
+                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()) // So Spring doesn't check Request Header for csrf_token
+                .and().authorizeRequests()
                 .antMatchers(PUBLIC_ALLOW_URL_PATTERN).permitAll() // Whitelist any url with open and Home i.e. / or index.html
                 .anyRequest()
                 .authenticated()
