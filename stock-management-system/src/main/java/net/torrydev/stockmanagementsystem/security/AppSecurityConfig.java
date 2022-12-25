@@ -1,6 +1,5 @@
 package net.torrydev.stockmanagementsystem.security;
 
-import net.torrydev.stockmanagementsystem.model.AppUserPermission;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -15,11 +14,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import static net.torrydev.stockmanagementsystem.model.AppUserPermission.ADMIN_WRITE;
-import static net.torrydev.stockmanagementsystem.model.AppUserPermission.DEVELOPER_WRITE;
 import static net.torrydev.stockmanagementsystem.model.AppUserRole.*;
 
 @Configuration
@@ -43,9 +39,20 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 //.httpBasic(); // Enabling Basic Authentication - Doesn't have logout
                 .formLogin() // Enabling Form-Based Authentication - Has logout
-                .loginPage("/login").permitAll() // Custom Login UI
-                .defaultSuccessUrl("/products/catalog"); // On Successful login, user will be redirected to that page instead of default "/" or index
+                    .loginPage("/login").permitAll() // Custom Login UI
+                    .defaultSuccessUrl("/products/catalog", true) // On Successful login, user will be redirected to that page instead of default "/" or index
+                    .and()
+                    .logout().logoutUrl("/logout")
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", HttpMethod.GET.name())) // POST req method should be set, If CSRF is enabled, otherwise GET.
+                // We use Get because csrf is disabled for this security config
+                        .clearAuthentication(true)
+                        .deleteCookies("JSESSIONID","remember-me")
+                        .invalidateHttpSession(true)
+                        .logoutSuccessUrl("/login");
+//                .and()
+//                 .rememberMe(); // Enable Remember Option in the login
     }
+
 
     // For Custom userName and Password - Using InMemoryUserDetails
 
