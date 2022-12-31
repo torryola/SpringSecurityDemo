@@ -13,7 +13,7 @@ public class AppUserDetailsService implements UserDetailsService {
     private final AppUserDetailsDao appUserDetailsDao;
 
     @Autowired
-    public AppUserDetailsService(@Qualifier("DemoDb") AppUserDetailsDao appUserDetailsDao) {
+    public AppUserDetailsService(@Qualifier(AppUserDetailsDaoImp.DEMO_DAO_IMPL) AppUserDetailsDao appUserDetailsDao) {
         this.appUserDetailsDao = appUserDetailsDao;
     }
 

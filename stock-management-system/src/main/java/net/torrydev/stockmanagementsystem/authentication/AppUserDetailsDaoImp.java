@@ -9,9 +9,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-@Repository("DemoDb") // This is a Qualifier for this repo impl - Makes it easier to switch impl of the interface
+@Repository(AppUserDetailsDaoImp.DEMO_DAO_IMPL) // This is a Qualifier for this repo impl - Makes it easier to switch impl of the interface
 public class AppUserDetailsDaoImp implements AppUserDetailsDao{
 
+    public static final String DEMO_DAO_IMPL = "DemoDb";
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
